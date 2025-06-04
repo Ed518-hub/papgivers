@@ -1,0 +1,329 @@
+body {
+    margin: 0;
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(to top, #8bd1f2, #e0f7ff);
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .background {
+    text-align: center;
+    width: 100%;
+    max-width: 900px;
+  }
+  
+  .title {
+    font-size: 48px;
+    font-weight: bold;
+    color: white;
+    text-shadow: 2px 2px 5px rgba(0,0,0,0.4);
+    margin-bottom: 40px;
+  }
+  
+  .menu-btn {
+    display: block;
+    background-color: #666;
+    color: white;
+    font-size: 24px;
+    border: none;
+    padding: 15px 30px;
+    margin: 20px auto;
+    border-radius: 10px;
+    cursor: pointer;
+    width: 250px;
+    box-shadow: 2px 2px 10px rgba(0,0,0,0.3);
+    transition: background 0.3s ease;
+  }
+  
+  .menu-btn:hover {
+    background-color: #888;
+  }
+  
+  .flag-container {
+    position: absolute;
+    top: -110px;
+    right: 80px;
+  }
+  
+  .flag {
+    width: 120px;
+    height: auto;
+    border: 2px solid #fff;
+    border-radius: 5px;
+  }
+  
+  .hidden {
+    display: none;
+  }
+  
+  .timeline-container {
+    margin-bottom: 30px;
+  }
+  
+  .timeline-container input[type="range"] {
+    width: 300px;
+  }
+  
+  .section {
+    margin-bottom: 30px;
+    color: white;
+  }
+  .section.country {
+  margin-bottom: 50px; /* lub więcej, jak trzeba */
+}
+
+  .country {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 15px;
+  }
+  
+  .polish-flag {
+    width: 40px;
+    height: 24px;
+    background: linear-gradient(white 50%, red 50%);
+    border: 1px solid #000;
+  }
+  
+ .party {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 20px;
+}
+
+.arrow-btn {
+  background-color: #555;
+  color: white;
+  border: none;
+  font-size: 24px;
+  padding: 12px 16px;
+  border-radius: 12px;
+  cursor: pointer;
+  transition: background 0.3s;
+  flex-shrink: 0; /* Strzałki się nie zmniejszają */
+}
+
+.arrow-btn:hover {
+  background-color: #777;
+}
+
+.party-info {
+  width: 180px; /* STAŁA szerokość – zapobiega przesuwaniu strzałek */
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+}
+
+.party-logo {
+  width: 80px;
+  height: auto;
+  margin-bottom: 8px;
+}
+
+.party-name {
+  font-size: 20px;
+  font-weight: bold;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis; /* Opcjonalnie, przy bardzo długich nazwach */
+}
+
+  
+  .difficulty {
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+  }
+  
+  .level {
+    width: 40px;
+    height: 40px;
+    border-radius: 10px;
+    line-height: 40px;
+    font-weight: bold;
+    cursor: pointer;
+    color: white;
+    background-color: #00cc00;
+    transition: background-color 0.3s;
+  }
+  
+  .level[data-level="2"] { background-color: #66cc00; }
+  .level[data-level="3"] { background-color: #cccc00; }
+  .level[data-level="4"] { background-color: #cc6600; }
+  .level[data-level="5"] { background-color: #cc0000; }
+  
+  .level.selected {
+    outline: 3px solid white;
+  }
+  
+  .buttons {
+    margin-top: 30px;
+  }
+  
+  .menu-btn.disabled {
+    background-color: #aaa;
+    cursor: not-allowed;
+  }
+  .godlo-container {
+    position: absolute;
+    top: 110px;
+    right: 660px;
+}
+
+.godlo {
+    width: 120px;
+    height: auto;
+    border: 2px solid #fff;
+    border-radius: 5px;
+}
+/* Przycisk zamiast logo własnej partii */
+.custom-party-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 80px;
+  height: 80px;
+  border: 2px dashed #666;
+  border-radius: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  color: #444;
+  background-color: #f0f0f0;
+  transition: background-color 0.3s ease;
+  margin: 0 10px;
+  user-select: none;
+}
+
+.custom-party-button:hover {
+  background-color: #ddd;
+}
+
+/* Strona tworzenia partii */
+.create-party-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border: 1px solid #bbb;
+  border-radius: 10px;
+  background: #fff;
+  font-family: Arial, sans-serif;
+}
+
+.create-party-logos {
+  display: flex;
+  justify-content: space-around;
+  margin-bottom: 15px;
+}
+
+.create-party-logos img {
+  width: 60px;
+  height: 60px;
+  cursor: pointer;
+  border: 2px solid transparent;
+  border-radius: 10px;
+  transition: border-color 0.3s ease;
+}
+
+.create-party-logos img.selected {
+  border-color: crimson;
+}
+
+.create-party-name {
+  width: 100%;
+  padding: 8px;
+  font-size: 16px;
+  margin-bottom: 15px;
+  border: 1px solid #aaa;
+  border-radius: 6px;
+}
+
+.create-party-submit {
+  background-color: crimson;
+  color: white;
+  border: none;
+  padding: 12px 20px;
+  font-size: 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  width: 100%;
+  transition: background-color 0.3s ease;
+}
+
+.create-party-submit:hover {
+  background-color: darkred;
+}
+#wlasnaPartia .logos img {
+  transition: transform 0.3s ease;
+  cursor: pointer;
+}
+
+#wlasnaPartia .logos img:hover {
+  transform: scale(1.2);
+  z-index: 10;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+}
+.country-box {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 15px;
+  background-color: #5f5e5e; /* szare tło */
+  padding: 15px 25px;
+  border-radius: 20px;
+  box-shadow: 2px 2px 10px rgba(0,0,0,0.2);
+  width: fit-content;
+  margin: 0 auto 50px auto; /* centrowanie + odstęp na dole */
+}
+.party-ideology {
+  margin-top: 6px;
+  font-size: 16px;
+  color: #5f5e5e;
+}
+/* Styl dla pola nazwy partii */
+#createPartyNameWrapper {
+  position: relative;
+  width: 100%;
+  max-width: 360px;
+  margin: 20px auto;
+}
+
+#createPartyNameWrapper label {
+  display: block;
+  font-weight: bold;
+  margin-bottom: 6px;
+  color: #333;
+  font-size: 16px;
+  text-align: left;
+}
+
+#createPartyNameWrapper input {
+  width: 100%;
+  padding: 12px 16px 12px 44px;
+  font-size: 16px;
+  border: 2px solid #ccc;
+  border-radius: 12px;
+  box-shadow: inset 0 1px 3px rgba(0,0,0,0.1);
+  transition: border-color 0.3s, box-shadow 0.3s;
+}
+
+#createPartyNameWrapper input:focus {
+  border-color: #007acc;
+  box-shadow: 0 0 6px rgba(0, 122, 204, 0.5);
+  outline: none;
+}
+
+/* Ikona partii */
+#createPartyNameWrapper .icon {
+  position: absolute;
+  top: 45px;
+  left: 14px;
+  transform: translateY(-50%);
+  color: #888;
+  font-size: 18px;
+  pointer-events: none;
+}
