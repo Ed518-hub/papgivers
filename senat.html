@@ -19,22 +19,35 @@
   <div id="topBanner"></div>
   <div id="topBannerOverlay">
     </div>
-<div id="stateStats">
+<div id="senatStatsBar">
   <div class="statBox">
-    <div class="icon coinIcon"></div>
-    <span id="budgetDisplay">500</span>
+    <span class="coinIcon"></span>
+    <span style="color:#ffd77f;">500</span>
   </div>
   <div class="statBox">
-  <div class="icon popIcon"><span></span></div>
-  <span id="populationDisplay">467</span>
+    <span class="popIcon"><span></span></span>
+    <span style="color:#ffd77f;">467</span>
+  </div>
+  <div class="statBox">
+    <span class="smileIcon"></span>
+    <span style="color:#6dff98;">2</span>
+  </div>
+  <div class="statBox">
+    <!-- Kolba badawcza SVG, możesz zmienić na <img src="img/kolba.png"> -->
+   <img class="researchIcon" src="img/kolba.png" alt="Badania">
+   <span style="color:white;">3/175</span>
+  </div>
 </div>
-  <div class="statBox">
-    <div class="icon smileIcon"></div>
-    <span id="happinessDisplay">2</span>
-  </div>
-<div class="statBox">
-  <img class="researchIcon" src="img/kolba.png" alt="Badania">
-  <span id="researchDisplay">3/175</span>
+<!-- Panel przycisków w prawym górnym rogu -->
+</div>
+ <button id="mainMenuBtn" class="mainMenuBtn" type="button" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<a id="gearMenuBtn" class="gearMenuBtn" href="ustawienia.html" title="Ustawienia" aria-label="Ustawienia">
+  <span class="gearIcon"></span>
+</a>
 </div>
 </body>
 </html>
