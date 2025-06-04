@@ -1,0 +1,243 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8">
+  <title>Sejm RP - Układ sali</title>
+  <link rel="icon" type="image/png" href="img/Herb_Polski.png">
+  <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="style2.css">
+  <script src="game.js" defer></script>
+</head>
+<body>
+  <!-- Canvas z przesunięciem w dół -->
+  <canvas id="sejmCanvas" width="1200" height="800" style="margin-top: 100px;"></canvas>
+  <!-- MODAL -->
+  <div id="modalOverlay">
+    <div id="modalContent">
+      <div class="modalPartyLogo" id="modalPartyLogo"></div>
+      <h2 id="modalName"></h2>
+      <p id="modalDetails"></p>
+      <button id="closeModal">Zamknij</button>
+    </div>
+  </div>
+  <!-- Pasek z flagą z szarą przezroczystą nakładką -->
+<div id="topBannerWrapper">
+  <div id="topBanner"></div>
+  <div id="topBannerOverlay"></div>
+</div>
+<div id="topBannerWrapper">
+  <div id="topBanner"></div>
+  <div id="topBannerOverlay">
+    </div>
+<div id="stateStats">
+  <div class="statBox">
+    <div class="icon coinIcon"></div>
+    <span id="budgetDisplay">500</span>
+  </div>
+  <div class="statBox">
+  <div class="icon popIcon"><span></span></div>
+  <span id="populationDisplay">467</span>
+</div>
+  <div class="statBox">
+    <div class="icon smileIcon"></div>
+    <span id="happinessDisplay">2</span>
+  </div>
+<div class="statBox">
+  <img class="researchIcon" src="img/kolba.png" alt="Badania">
+  <span id="researchDisplay">3/175</span>
+</div>
+
+</div>
+</div>
+</div>
+</div>
+<div class="topStatsBar unifiedStatsBar">
+  <div class="partyStat">
+    <div id="chosenPartyLogoWrapper">
+      <img id="chosenPartyLogo" src="" alt="Logo partii">
+    </div>
+    <div class="partyCount" id="partyCount">15</div>
+  </div>
+  <div class="allStats">
+    <div class="statGroup">
+      <div class="icon moneyIcon"></div>
+      <div class="statValue" id="moneyDisplay">250</div>
+    </div>
+    <div class="statGroup">
+      <div class="icon corruptionIcon"></div>
+      <div class="statValue" id="corruptionDisplay">7</div>
+    </div>
+    <div class="statGroup">
+      <div class="icon percentIcon">%</div>
+      <div class="statValue" id="supportDisplay">42%</div>
+    </div>
+  </div>
+</div>
+</div>
+</div>
+</div>
+  </div>
+</div>
+<button id="skipTurnBtn" onclick="skipTura()" title="Pomiń turę">⏭️</button>
+<div class="turnBar">
+  <!-- Kwadraciki tur 1–11 -->
+  <div class="turn" onclick="otworzOknoTury(1)">1</div>
+  <div class="turn" onclick="otworzOknoTury(2)">2</div>
+  <div class="turn" onclick="otworzOknoTury(3)">3</div>
+  <div class="turn" onclick="otworzOknoTury(4)">4</div>
+  <div class="turn" onclick="otworzOknoTury(5)">5</div>
+  <div class="turn" onclick="otworzOknoTury(6)">6</div>
+  <div class="turn" onclick="otworzOknoTury(7)">7</div>
+  <div class="turn" onclick="otworzOknoTury(8)">8</div>
+  <div class="turn" onclick="otworzOknoTury(9)">9</div>
+  <div class="turn" onclick="otworzOknoTury(10)">10</div>
+  <div class="turn" onclick="otworzOknoTury(11)">11</div>
+</div>
+
+<!-- Modal okienko -->
+<div id="turaModal" class="modal" style="display: none;">
+<div class="modalContent">
+  <h3>Tura <span id="numerTury"></span></h3>
+  <div class="actionIcons">
+    <div class="actionBtn" title="Nowa ustawa" onclick="otworzUstaweModal()">📝</div>
+    <div class="actionBtn" title="Usuń ustawę" onclick="otworzUsunUstaweModal()">🗑️</div>
+   <div class="actionBtn" title="Wywiad" onclick="otworzInterviewModal()" alt="Wywiad">🎙️</div>
+    <div class="actionBtn" title="Sondaż" onclick="pokazPollModal()">📊</div>
+    <div class="actionBtn" title="Kampania wyborcza" onclick="pokazKampaniaModal()">🗳️</div>
+
+  </div>
+  <button onclick="zamknijTure()">Zamknij</button>
+</div>
+<a href="ustawienia.html" id="settingsButton" title="Ustawienia">⚙</a>
+<div id="interviewModal" class="modal" style="display:none;">
+  <div class="modalContent" id="interviewModalContent"></div>
+
+</div>
+
+<!-- MODAL -->
+<div id="pollModal" class="modalOverlay" style="display: none;">
+  <div class="pollContent">
+    <h3>Wybierz rodzaj sondażu</h3>
+    <div class="pollOptions">
+    <button class="pollBtn" onclick="zaplanujSondazParlamentarny()">🗳️ Jak zagłosował(a)by Pan/Pani w wyborach parlamentarnych? (50 💸)</button>
+<button class="pollBtn" id="prezydentPollBtn" onclick="zaplanujSondazPrezydencki()">🇵🇱 Jak zagłosował(a)by Pan/Pani w wyborach prezydenckich? (50 💸)</button>
+<button class="pollBtn" onclick="zaplanujSondazRzadowy()">🏛️ Jak ocenia Pan/Pani pracę rządu? (50 💸)</button>
+    </div>
+    <button onclick="zamknijPoll()">Zamknij</button>
+  </div>
+</div>
+</div>
+<div id="rzadowySondazModal" class="modalOverlay" style="display: none;">
+  <div class="pollContent">
+    <h3>📊 Sondaż: Jak oceniasz pracę rządu?</h3>
+    <p>✅ Pozytywnie: 37%</p>
+    <p>⚖️ Neutralnie: 29%</p>
+    <p>❌ Negatywnie: 34%</p>
+    <button onclick="zamknijRzadowySondaz()">Zamknij</button>
+  </div>
+</div>
+<div id="parlamentarnySondazModal" class="modalOverlay" style="display: none;">
+  <div class="pollContent">
+    <h3>📊 Sondaż: Na którą partię oddał(a)by Pan(i) głos?</h3>
+    <div class="pollBars" style="display: flex; align-items: flex-end; gap: 20px; justify-content: center; height: 250px; margin: 20px 0;">
+      <!-- Partie zostaną wygenerowane przez JS -->
+    </div>
+    <div class="pollLabels" style="display: flex; gap: 20px; justify-content: center; flex-wrap: wrap;">
+      <!-- Logo i nazwa -->
+    </div>
+    <button onclick="zamknijParlamentarnySondaz()">Zamknij</button>
+  </div>
+</div>
+<div id="kampaniaModal" class="modal-overlay" style="display: none;">
+  <div class="modal-content">
+    <h2 class="modal-title">Wybierz typ kampanii</h2>
+    <div class="campaign-buttons">
+<div class="campaignButtons">
+  <button id="kampaniaParlamentarnaBtn" class="campaignBtn" onclick="otworzKampaniaParlamentarna()">🏛️Kampania Parlamentarna</button>
+<button id="kampaniaPrezydenckaBtn" class="campaignBtn" onclick="otworzKampaniaPrezydencka()">🗓️Kampania Prezydencka</button>
+</div>
+
+    </div>
+    <button class="modal-close" onclick="zamknijKampania()">Zamknij</button>
+  </div>
+</div>
+<!-- MODAL: Kampania Parlamentarna -->
+<div id="kampaniaParlamentarnaModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Kampania Parlamentarna</h2>
+    <div class="campaign-buttons">
+      <button class="campaignBtn" onclick="akcjaSpotkanie()">📣 Spotkanie z wyborcami (20 💸)</button>
+      <button class="campaignBtn" onclick="akcjaDebata()">🎤 Debata parlamentarna (150 💸)</button>
+      <button class="campaignBtn" onclick="akcjaPlakaty()">🧾 Plakaty wyborcze (100 💸)</button>
+    </div>
+    <br />
+    <button onclick="zamknijKampaniaParlamentarna()" class="campaignBtn">Zamknij</button>
+  </div>
+</div>
+<!-- MODAL: Kampania Parlamentarna -->
+<div id="kampaniaParlamentarnaModal" class="modal" style="display: none;">
+  <div class="modal-content">
+    <h2>Kampania Parlamentarna</h2>
+    <div class="campaign-buttons">
+      <button class="campaignBtn" onclick="akcjaSpotkanie()">📣 Spotkanie z wyborcami (20 💸)</button>
+      <button class="campaignBtn" onclick="akcjaDebata()">🎤 Debata parlamentarna (150 💸)</button>
+      <button class="campaignBtn" onclick="akcjaPlakaty()">🧾 Plakaty wyborcze (100 💸)</button>
+    </div>
+    <br />
+    <button onclick="zamknijKampaniaParlamentarna()" class="campaignBtn">Zamknij</button>
+  </div>
+</div>
+
+
+<!-- MODAL kampanii prezydenckiej -->
+<div id="kampaniaPrezydenckaModal" class="modal" style="display: none;">
+  <div class="modalContent">
+    <h2>Kampania Prezydencka</h2>
+    <div style="margin-top: 20px;">
+      <button class="campaignBtn" onclick="akcjaKampaniiPrezydenckiej('spotkanie')">Spotkanie z wyborcami (20 💸)</button>
+      <button class="campaignBtn" onclick="akcjaKampaniiPrezydenckiej('debata')">Debata prezydencka (200 💸)</button>
+      <button class="campaignBtn" onclick="akcjaKampaniiPrezydenckiej('plakaty')">Plakaty wyborcze (100 💸)</button>
+      <button class="campaignBtn" onclick="akcjaKampaniiPrezydenckiej('konwencja')">Konwencja (190 💸)</button>
+    </div>
+    <div style="margin-top: 15px;">
+      <button class="campaignBtn" onclick="zamknijKampaniaPrezydencka()">Zamknij</button>
+    </div>
+  </div>
+</div>
+<div id="ustawaModal" class="modal" style="display: none;">
+  <div class="modalContent">
+    <h3>📜 Nowa ustawa</h3>
+
+    <label for="poselSelect" style="margin-top: 10px; font-weight: bold;">Wybierz posła:</label>
+    <div class="select-wrapper">
+      <select id="poselSelect" class="styled-select"></select>
+    </div>
+
+    <div id="ustawaOpcje" style="display: none; margin-top: 20px;">
+      <label for="ustawaSelect" style="font-weight: bold;">Wybierz ustawę:</label>
+      <div class="select-wrapper">
+        <select id="ustawaSelect" class="styled-select">
+          <option>Reforma edukacji 🎓</option>
+          <option>Podatek liniowy🪙</option>
+          <option>Ochrona środowiska🍁</option>
+          <option>Ułatwienia dla przedsiębiorców🪙😊</option>
+        </select>
+      </div>
+
+      <button class="menu-btn" onclick="zatwierdzUstawe()" style="margin-top: 12px;">📩 Zgłoś ustawę</button>
+    </div>
+
+    <button id="zamknijUstaweBtn" style="margin-top: 10px;"  class="menu-btn">Zamknij</button>
+
+</div>
+</div>
+ <button id="mainMenuBtn" class="mainMenuBtn" type="button" aria-label="Menu">
+  <span></span>
+  <span></span>
+  <span></span>
+</button>
+<a id="gearMenuBtn" class="gearMenuBtn" href="ustawienia.html" title="Ustawienia" aria-label="Ustawienia">
+  <span class="gearIcon"></span>
+</a>
+</body>
+</html>
