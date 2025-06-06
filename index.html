@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>Papgivers</title>
+  <link rel="stylesheet" href="style.css" />
+  <script src="gamesetup.js" defer></script>
+  <link rel="icon" type="image/png" href="img/Herb_Polski.png">
+</head>
+
+<body>
+  <div class="background">
+
+    <!-- MENU GŁÓWNE -->
+    <div id="menu" class="menu">
+      <h1 class="title">Papgivers</h1>
+      <button class="menu-btn" onclick="pokazNowaGre()">NOWA GRA</button>
+      <button class="menu-btn">WCZYTAJ GRĘ</button>
+    </div>
+
+    <!-- PANEL STARTOWY NOWEJ GRY -->
+    <div id="gameSetup" class="hidden">
+
+      <!-- OŚ CZASU -->
+      <div class="section timeline-container">
+        <label for="yearRange">Wybierz rok rozpoczęcia: <strong id="selectedYear">2000</strong></label><br />
+        <input type="range" id="yearRange" min="1990" max="2025" step="1" value="2000" />
+      </div>
+
+      <!-- PAŃSTWO -->
+    <div class="section country-box">
+  <div class="polish-flag"></div>
+  <div class="country-name">Polska</div>
+</div>
+
+
+      <!-- PARTIA -->
+      <div class="section party">
+        <button class="arrow-btn" onclick="zmienPartie(-1)">&#9664;</button>
+        <div class="party-info">
+          <img id="partyLogo" src="img/PiS.jpg" alt="Logo partii" class="party-logo" />
+          <div id="partyName" class="party-name">Prawo i Sprawiedliwość</div>
+          <div id="partyIdeology" class="party-ideology">Poglądy: Prawicowe</div>
+        </div>
+        <button class="arrow-btn" onclick="zmienPartie(1)">&#9654;</button>
+      </div>
+
+      <!-- PRZYCISK STWÓRZ WŁASNĄ PARTIĘ -->
+      <div style="margin: 10px 0; text-align: center;">
+        <button class="menu-btn" id="showCreatePartyBtn">Stwórz własną partię</button>
+      </div>
+
+      <!-- POZIOM TRUDNOŚCI -->
+      <div class="section">
+        <div>Poziom trudności:</div>
+        <div class="difficulty">
+          <div class="level" data-level="1">1</div>
+          <div class="level" data-level="2">2</div>
+          <div class="level" data-level="3">3</div>
+          <div class="level" data-level="4">4</div>
+          <div class="level" data-level="5">5</div>
+        </div>
+      </div>
+
+      <!-- PRZYCISKI NA DOLE -->
+      <div class="buttons">
+        <button class="menu-btn" onclick="wrocDoMenu()">WSTECZ</button>
+        <button class="menu-btn disabled" id="startButton">START</button>
+      </div>
+    </div>
+
+    <!-- PANEL TWORZENIA WŁASNEJ PARTII -->
+    <div id="wlasnaPartia" class="hidden">
+      <h2>Stwórz własną partię</h2>
+      <div class="custom-party-options">
+        <label>Wybierz logo:</label>
+        <div class="logos">
+          <img src="img/wlasne.png" class="party-logo logo-choice" />
+          <img src="img/wlasne1.png" class="party-logo logo-choice" />
+          <img src="img/wlasne2.png" class="party-logo logo-choice" />
+          <img src="img/wlasne3.png" class="party-logo logo-choice" />
+          <img src="img/wlasne4.png" class="party-logo logo-choice" />
+        </div>
+        <label>Nazwa partii:</label>
+        <div id="createPartyNameWrapper">
+  <label for="nazwaNowejPartii">Nazwa partii:</label>
+  <span class="icon">🏛️</span>
+  <input type="text" id="nazwaNowejPartii" placeholder="Wpisz nazwę swojej partii">
+</div>
+
+        <!-- Suwak poglądów – tylko dla tworzenia własnej partii -->
+<div style="margin-top: 15px;">
+  <label for="ideologyRange">Wybierz poglądy:</label>
+  <input type="range" id="ideologyRange" min="0" max="2" value="1" step="1" />
+  <div id="ideologyLabel">Centrowe</div>
+</div>
+
+        <div style="margin-top:10px;">
+          <button class="menu-btn" id="stworzPartieBtn">STWÓRZ PARTIĘ</button> 
+          <button class="menu-btn" id="anulujStworzenieBtn">ANULUJ</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="godlo-container" id="godloContainer">
+    <img src="img/Herb_Polski.svg.png" alt="godlo" class="godlo" />
+  </div>
+<script>
+  const levelDivs = document.querySelectorAll('.level');
+
+  levelDivs.forEach(div => {
+    div.addEventListener('click', () => {
+      const selectedLevel = div.getAttribute('data-level');
+      localStorage.setItem('difficultyLevel', selectedLevel);
+
+      // (opcjonalnie) zaznacz wybrany poziom wizualnie
+      levelDivs.forEach(l => l.classList.remove('selected'));
+      div.classList.add('selected');
+
+      // (opcjonalnie) przejście dalej, np. do gry:
+      // window.location.href = "index.html";
+    });
+  });
+  document.getElementById("startButton").addEventListener("click", () => {
+  const year = document.getElementById("yearRange").value;
+  localStorage.setItem("wybranyRok", year);
+
+  // Przekierowanie do gameplay
+  window.location.href = "gameplay.html"; // zmień jeśli masz inny plik z grą
+});
+// przykład w index.html po kliknięciu "Start"
+</script>
+
+</body>
+</html>
