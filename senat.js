@@ -96,31 +96,129 @@ function drawAllSenators() {
 }
 
 drawAllSenators();
-// funkcja guziczków prawym górnym rogu
-document.getElementById('themeBtn').onclick = function() {
-  document.body.classList.toggle('dark-theme');
-  // Dodaj swoją logikę zmiany motywu!
-};
-document.getElementById('menuBtn').onclick = function() {
-  alert('Tutaj możesz otworzyć menu!');
-  // Zamień na własne menu/modal
-};
-function pokazMainMenuModal() {
-  if (document.getElementById("mainMenuModal")) return;
-  const modal = document.createElement("div");
-  modal.id = "mainMenuModal";
-  modal.innerHTML = `
-    <div class="mainMenuModalContent">
-      <button class="mainMenuModalBtn" onclick="window.location.href='senat.html'">Senat</button>
-      <button class="mainMenuModalBtn" onclick="window.location.href='prezydentpalac.html'">Pałac Prezydencki</button>
-      <button class="mainMenuModalBtn" onclick="window.location.href='trybunalkonstytucyjny.html'">Trybunał Konstytucyjny</button>
-      <button class="mainMenuModalBtn" onclick="window.location.href='gameplay.html'">Sejm</button>
-      <button class="mainMenuModalBtn" onclick="window.location.href='parlamenteuropejski.html'">Parlament Europejski</button>
-      <button class="mainMenuModalBtn" onclick="document.body.removeChild(document.getElementById('mainMenuModal'))" style="margin-top:18px;">Zamknij</button>
-    </div>
-  `;
-  modal.addEventListener("click", e => {
-    if (e.target === modal) document.body.removeChild(modal);
-  });
-  document.body.appendChild(modal);
+window.addEventListener('DOMContentLoaded', function() {
+  // funkcja wyświetlania modala
+  function pokazMainMenuModal() {
+    if (document.getElementById("mainMenuModal")) return;
+    const modal = document.createElement("div");
+    modal.id = "mainMenuModal";
+    modal.style.position = "fixed";
+    modal.style.top = 0;
+    modal.style.left = 0;
+    modal.style.width = "100vw";
+    modal.style.height = "100vh";
+    modal.style.background = "rgba(0,0,0,0.28)";
+    modal.style.display = "flex";
+    modal.style.alignItems = "flex-start";
+    modal.style.justifyContent = "flex-end";
+    modal.style.zIndex = "4000";
+    modal.innerHTML = `
+      <div class="mainMenuModalContent" style="margin-top:70px;margin-right:32px;background:#6b6b6b;border-radius:16px;box-shadow:0 8px 32px #0002;padding:32px 38px 24px 38px;min-width:220px;display:flex;flex-direction:column;align-items:stretch;gap:14px;">
+        <button class="mainMenuModalBtn" onclick="window.location.href='senat.html'">Senat</button>
+        <button class="mainMenuModalBtn" onclick="window.location.href='prezydentpalac.html'">Pałac Prezydencki</button>
+        <button class="mainMenuModalBtn" onclick="window.location.href='trybunalkonstytucyjny.html'">Trybunał Konstytucyjny</button>
+        <button class="mainMenuModalBtn" onclick="window.location.href='gameplay.html'">Sejm</button>
+        <button class="mainMenuModalBtn" onclick="window.location.href='parlamenteuropejski.html'">Parlament Europejski</button>
+        <button class="mainMenuModalBtn" id="zamknijMenuBtn" style="margin-top:18px;">Zamknij</button>
+      </div>
+    `;
+    modal.addEventListener("click", function(e) {
+      if (e.target === modal || e.target.id === "zamknijMenuBtn") {
+        document.body.removeChild(modal);
+      }
+    });
+    document.body.appendChild(modal);
+  }
+
+  // podpinanie przycisku
+  var btn = document.getElementById('mainMenuBtn');
+  if (btn) {
+    btn.onclick = pokazMainMenuModal;
+  } else {
+    console.error('Nie znaleziono przycisku mainMenuBtn!');
+  }
+});
+// Przykładowe wartości – możesz podmieniać w dowolnym momencie gry:
+let currentPartyLogo = "img/pis.png";
+let currentPartyCount = 15;
+let currentMoney = 250;
+let currentCorruption = 7;
+let currentSupport = 42;
+let currentVoters = 2000;
+
+// Ustawianie wartości na pasku statystyk:
+function updateStatsBar() {
+  document.getElementById("chosenPartyLogo").src = currentPartyLogo;
+  document.getElementById("partyCount").textContent = currentPartyCount;
+  document.getElementById("moneyDisplay").textContent = currentMoney;
+  document.getElementById("corruptionDisplay").textContent = currentCorruption;
+  document.getElementById("supportDisplay").textContent = currentSupport + "%";
+  document.getElementById("votersDisplay").textContent = currentVoters;
 }
+
+// Funkcja do obsługi kliknięcia przycisku skipowania tury
+document.getElementById("skipTurnBtn").onclick = function() {
+  skipTura();
+};
+
+// Przykład funkcji skipowania tury
+function skipTura() {
+  const next = aktualnaTura + 1;
+
+  // 📊 Sondaże parlamentarne
+  if (zaplanowanySondazParlamentarny && next === zaplanowanaTuraParlamentarna) {
+    pokazParlamentarnySondaz();
+    zaplanowanySondazParlamentarny = false;
+    zaplanowanaTuraParlamentarna = null;
+    czekaNaSkip = true;
+    return;
+  }
+
+  // 📊 Sondaż rządowy
+  if (zaplanowanySondaz === "rzadowy" && next === zaplanowanaTuraSondazu) {
+    document.getElementById("rzadowySondazModal").style.display = "flex";
+    zaplanowanySondaz = null;
+    zaplanowanaTuraSondazu = null;
+    czekaNaSkip = true;
+    return;
+  }
+
+  wykonajSkip();
+  sprawdzPlakaty?.();
+}
+// Przykład funkcji otwierania okienka tury po kliknięciu kwadracika
+function otworzOknoTury(nr, automatyczna = false) {
+  if (automatyczna) return;
+
+  // Sprawdź, czy tura ma już zaplanowaną akcję
+  if (zaplanowaneAkcje[nr]) {
+    alert("Ta tura ma już zaplanowaną akcję.");
+    return;
+  }
+  wybranaTuraDoPlanowania = nr; // TO JEST KLUCZOWE!
+  document.getElementById("numerTury").textContent = nr;
+  document.getElementById("turaModal").style.display = "flex";
+  document.getElementById("numerTury").textContent = nr;
+  document.getElementById("turaModal").style.display = "flex";
+
+  // Ewentualne wyświetlenie sondażu rządowego
+  if (zaplanowanySondaz === "rzadowy" && nr === zaplanowanaTuraSondazu) {
+    document.getElementById("rzadowySondazModal").style.display = "flex";
+    zaplanowanySondaz = null;
+    zaplanowanaTuraSondazu = null;
+  }
+
+  // Ewentualne wyświetlenie sondażu parlamentarnego
+  if (zaplanowanySondazParlamentarny && nr === zaplanowanaTuraParlamentarna) {
+    pokazParlamentarnySondaz();
+    zaplanowanySondazParlamentarny = false;
+    zaplanowanaTuraParlamentarna = null;
+  }
+  
+}
+function zamknijTure() {
+  document.getElementById("turaModal").style.display = "none";
+}
+
+// Wywołaj raz na start:
+updateStatsBar();
