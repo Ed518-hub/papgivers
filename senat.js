@@ -374,13 +374,11 @@ const rolaVipy = [
   "Marszalek Sejmu",
   "Prezes Najwyższej Izby Kontroli"
 ];
-
 for (let i = 0; i < 9; i++) {
-  const x = 180 + i * (seatSize + 20);
+  const x = 100; // stała pozycja X (np. przy lewej krawędzi)
+  const y = 100 + i * (seatSize + 30); // Y rośnie co slot, odstęp 30 px
   const rola = rolaVipy[i] || "VIP";
-  vipy.push({ id: i + 1, x, y: 100, rola });
- drawSeat(x, 100, "white");  // <-- dodaj kolor
-
+  vipy.push({ id: i + 1, x, y, rola });
 }
 // --- Definicje partii ---
 const PARTIE = [
@@ -393,7 +391,7 @@ const PARTIE = [
 ];
 const premierPartia = PARTIE[0];
 const premier = {
-  x: 700,
+  x: 1100, // prawa strona, wyśrodkowany na tej samej wysokości co ministrowie
   y: 100,
   color: "darkred",
   name: "Premier RP",
@@ -415,8 +413,9 @@ const premier = {
   poglady: "Prawicowe"
 };
 const ministrowie = [
+  
   {
-    x: 740,
+    x: 1150,
     y: 100,
     color: "lightblue",
     name: "Minister A",
@@ -436,8 +435,8 @@ const ministrowie = [
     poglady: "Centrowe"
   },
   {
-    x: 780,
-    y: 100,
+    x: 1150,
+    y: 150,
     color: "lightblue",
     name: "Minister B",
     age: 50,
@@ -456,8 +455,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
  {
-    x: 820,
-    y: 100,
+    x: 1150,
+    y: 200,
     color: "lightblue",
     name: "Minister C",
     age: 50,
@@ -476,8 +475,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
  {
-    x: 860,
-    y: 100,
+    x: 1150,
+    y: 250,
     color: "lightblue",
     name: "Minister D",
     age: 50,
@@ -496,8 +495,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
  {
-    x: 900,
-    y: 100,
+    x: 1150,
+    y: 300,
     color: "lightblue",
     name: "Minister E",
     age: 50,
@@ -516,8 +515,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
   {
-    x: 940,
-    y: 100,
+    x: 1150,
+    y: 350,
     color: "lightblue",
     name: "Minister F",
     age: 50,
@@ -536,8 +535,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
   {
-    x: 980,
-    y: 100,
+    x: 1150,
+    y: 400,
     color: "lightblue",
     name: "Minister G",
     age: 50,
@@ -556,8 +555,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
   {
-    x: 1020,
-    y: 100,
+    x: 1150,
+    y: 450,
     color: "lightblue",
     name: "Minister H",
     age: 50,
@@ -576,8 +575,8 @@ const ministrowie = [
     poglady: "Lewicowe"
   },
 {
-    x: 1060,
-    y: 100,
+    x: 1150,
+    y: 500,
     color: "lightblue",
     name: "Minister I",
     age: 50,
@@ -632,10 +631,8 @@ for (let r = 0; miejscaDoWygenerowania > 0; r++) {
 // --- Przydziel partie blokami sektorowymi (każda partia siedzi razem w jednym sektorze) ---
 let id = 34;
 const poslowie = [];
-const baseSeats = Math.floor(totalSeats / liczbaPartii);
-const extraSeats = totalSeats % liczbaPartii;
-const miejscaNaPartie = Array(liczbaPartii).fill(baseSeats);
-for (let i = 0; i < extraSeats; i++) miejscaNaPartie[i]++;
+const miejscaNaPartie = Array(liczbaPartii).fill(totalSeats / liczbaPartii);
+
 
 // policz ile miejsc jest w każdym rzędzie
 const miejscaWrzędach = [];
@@ -682,7 +679,7 @@ for (let i = 0; i < reszta; i++) {
         id: id++,
         x: miejsce.x,
         y: miejsce.y,
-        name: `Poseł ${id - 33}`,
+        name: `Senator ${id - 33}`,
         age: 30 + ((id - 34) % 30),
         party: partia.nazwa,
         partyColor: partia.kolor,
@@ -735,7 +732,7 @@ function drawPoslowie() {
   poslowie.forEach(posel => drawSeat(posel.x, posel.y, posel.partyColor, posel.partyLogo));
 }
 function drawBiurkoMarszalka() {
-  ctx.fillStyle = "#a00";
+  ctx.fillStyle = "#8c6907";
   ctx.fillRect(480, 130, 240, 40); // obniżone o 40px
   drawSeat(600, 120, "red"); // głowa Marszałka
 }
@@ -750,15 +747,11 @@ function drawPremier() {
 function drawMinisters() {
   ministrowie.forEach(min => drawSeat(min.x, min.y, min.color));
 }
-
 function drawVIPs() {
-  for (let i = 0; i < 9; i++) {
-    const x = 180 + i * (seatSize + 20);
-    drawSeat(x, 100, "white");
+  for (let i = 0; i < vipy.length; i++) {
+    drawSeat(vipy[i].x, vipy[i].y, "white");
   }
 }
-
-
 function drawNiebieskaKropka() {
   ctx.beginPath();
   ctx.arc(600, 200, 10, 0, Math.PI * 2); // było 160
