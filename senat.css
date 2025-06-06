@@ -274,3 +274,204 @@ body {
   background-size: contain;
   background-repeat: no-repeat;
 }
+#mainMenuModal {
+  position: fixed;
+  top: 0; left: 0; width: 100vw; height: 100vh;
+  background: rgba(0,0,0,0.35);
+  display: flex;
+  align-items: flex-start;
+  justify-content: flex-end;
+  z-index: 4000;
+}
+
+#mainMenuModal .mainMenuModalContent {
+  margin-top: 20px;
+  margin-right: 40px;
+  background: #fff;
+  border-radius: 18px;
+  padding: 22px 16px 22px 16px;
+  min-width: 320px;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  box-shadow: none; /* Brak cienia */
+}
+
+.mainMenuModalBtn {
+  background-color: #5a5a5a;
+  color: #fff;
+  padding: 14px 18px;
+  font-size: 19px;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 18px;
+  transition: background 0.18s, transform 0.18s;
+  font-weight: normal;
+  text-align: left;
+  box-shadow: none;
+}
+
+.mainMenuModalBtn:last-child {
+  margin-bottom: 0;
+}
+
+.mainMenuModalBtn:hover {
+  background: #777;
+  transform: scale(1.03);
+}
+#mainMenuModal .mainMenuModalContent {
+  background: #fff !important;
+}
+.unifiedStatsBar {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  min-height: 64px;
+  background: #888;
+  border-radius: 16px 16px 0 0;
+  display: flex;
+  align-items: center;
+  padding: 0 32px;
+  box-shadow: 0 -2px 8px #0003;
+  z-index: 10000;
+  gap: 32px;
+}
+.partyStat {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+#chosenPartyLogoWrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 44px;
+  width: 44px;
+}
+#chosenPartyLogo {
+  height: 40px;
+  width: 40px;
+  border-radius: 8px;
+  box-shadow: 0 1px 6px #0004;
+  background: #eee;
+  display: block;
+}
+.partyCount {
+  color: #fff;
+  font-size: 1.6em;
+  font-weight: bold;
+  min-width: 32px;
+  text-align: left;
+}
+.allStats {
+  display: flex;
+  align-items: center;
+  gap: 28px;
+}
+.statGroup {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 1.25em;
+}
+.statValue {
+  color: #fff;
+  font-weight: bold;
+  font-size: 1.2em;
+}
+.moneyIcon {
+  width: 28px;
+  height: 18px;
+  background-color: #4caf50;
+  border: 2px solid #2e7d32;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.3);
+}
+.moneyIcon::before {
+  content: "$";
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: 1px;
+  left: 7px;
+  font-size: 14px;
+}
+.corruptionIcon {
+  width: 28px;
+  height: 18px;
+  background-color: #333;
+  border: 2px solid #111;
+  border-radius: 4px;
+  position: relative;
+  box-shadow: inset 0 0 3px rgba(0,0,0,0.5);
+}
+.corruptionIcon::before {
+  content: "✖";
+  color: white;
+  font-weight: bold;
+  position: absolute;
+  top: -1px;
+  left: 8px;
+  font-size: 14px;
+}
+.percentIcon {
+  font-weight: bold;
+  font-size: 20px;
+  color: #ffffff;
+  background-color: #666;
+  padding: 2px 8px;
+  border-radius: 4px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.turnBar {
+  position: fixed;
+  bottom: 70px;
+  left: 20px;
+  display: flex;
+  gap: 2px; /* Mniejsze odstępy */
+  z-index: 9999;
+}
+
+.turn {
+  width: 36px;
+  height: 36px;
+  background-color: #888;
+  border: 1px solid #555;
+  color: white;
+  font-weight: bold;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: background 0.2s;
+  border-radius: 10px;
+}
+
+.turn:hover {
+  background-color: #aaa;
+}
+  #skipTurnBtn {
+  position: fixed;
+  bottom: 70px;
+  right: 20px;
+  background-color: #444;
+  color: white;
+  border: none;
+  border-radius: 50%;
+  width: 56px;
+  height: 56px;
+  font-size: 24px;
+  box-shadow: 0 2px 8px rgba(0,0,0,0.4);
+  cursor: pointer;
+  z-index: 9999;
+  transition: background 0.3s;
+}
+#skipTurnBtn:hover {
+  background-color: #666;
+}
