@@ -4,12 +4,12 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Senat</title>
+    <link rel="icon" type="image/png" href="img/Herb_Polski.png">
     <link rel="stylesheet" href="senat.css">
 </head>
 <body>
     <div class="sala-senatu" id="salaSenatu"></div>
     <canvas id="senatCanvas" width="1200" height="300"></canvas>
-    <script src="senat.js"></script>
       <!-- Pasek z flagą z szarą przezroczystą nakładką -->
 <div id="topBannerWrapper">
   <div id="topBanner"></div>
@@ -49,5 +49,47 @@
   <span class="gearIcon"></span>
 </a>
 </div>
+<!-- Przycisk skipowania tury -->
+<button id="skipTurnBtn" onclick="skipTura()" title="Pomiń turę">⏭️</button>
+
+<!-- Pasek statystyk na dole -->
+<div class="topStatsBar unifiedStatsBar">
+  <div class="partyStat">
+    <div id="chosenPartyLogoWrapper">
+      <img id="chosenPartyLogo" src="" alt="Logo partii">
+    </div>
+    <div class="partyCount" id="partyCount">15</div>
+  </div>
+  <div class="allStats">
+    <div class="statGroup">
+      <div class="icon moneyIcon"></div>
+      <div class="statValue" id="moneyDisplay">250</div>
+    </div>
+    <div class="statGroup">
+      <div class="icon corruptionIcon"></div>
+      <div class="statValue" id="corruptionDisplay">7</div>
+    </div>
+    <div class="statGroup">
+      <div class="icon percentIcon">%</div>
+      <div class="statValue" id="supportDisplay">42%</div>
+    </div>
+  </div>
+</div>
+
+<!-- Pasek tur (kwadraciki 1-11) -->
+<div class="turnBar">
+  <div class="turn" onclick="otworzOknoTury(1)">1</div>
+  <div class="turn" onclick="otworzOknoTury(2)">2</div>
+  <div class="turn" onclick="otworzOknoTury(3)">3</div>
+  <div class="turn" onclick="otworzOknoTury(4)">4</div>
+  <div class="turn" onclick="otworzOknoTury(5)">5</div>
+  <div class="turn" onclick="otworzOknoTury(6)">6</div>
+  <div class="turn" onclick="otworzOknoTury(7)">7</div>
+  <div class="turn" onclick="otworzOknoTury(8)">8</div>
+  <div class="turn" onclick="otworzOknoTury(9)">9</div>
+  <div class="turn" onclick="otworzOknoTury(10)">10</div>
+  <div class="turn" onclick="otworzOknoTury(11)">11</div>
+</div>
+<script src="senat.js"></script>
 </body>
 </html>
