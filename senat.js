@@ -629,11 +629,6 @@ for (let r = 0; miejscaDoWygenerowania > 0; r++) {
   }
 }
 // --- Przydziel partie blokami sektorowymi (każda partia siedzi razem w jednym sektorze) ---
-let id = 34;
-const poslowie = [];
-const miejscaNaPartie = Array(liczbaPartii).fill(totalSeats / liczbaPartii);
-
-
 // policz ile miejsc jest w każdym rzędzie
 const miejscaWrzędach = [];
 let idx = 0;
@@ -646,40 +641,56 @@ for (let r = 0; miejscaDoWygenerowania2 > 0; r++) {
   idx += seatsInRow;
   miejscaDoWygenerowania2 -= seatsInRow;
 }
-let miejsceIdx = 0;
-for (let r = 0; r < miejscaWrzędach.length; r++) {
-  let colIdx = 0;
-  let suma = 0;
-  let miejscaWtymRzedzie = miejscaWrzędach[r];
-  // policz ile miejsc każda partia powinna dostać w tym rzędzie (bez zaokrąglania)
-const ileNaPartie = [];
-let sumaZaokr = 0;
-const udzialy = [];
-for (let k = 0; k < liczbaPartii; k++) {
-  const dokladnie = miejscaWtymRzedzie * miejscaNaPartie[k] / totalSeats;
-  const ile = Math.floor(dokladnie);
-  ileNaPartie.push(ile);
-  sumaZaokr += ile;
-  udzialy.push({ idx: k, frac: dokladnie - ile });
-}
-// rozdziel resztę miejsc do partii z największymi ułamkami
-let reszta = miejscaWtymRzedzie - sumaZaokr;
-udzialy.sort((a, b) => b.frac - a.frac);
-for (let i = 0; i < reszta; i++) {
-  ileNaPartie[udzialy[i].idx]++;
-}
-  // ostatniej partii daj resztę miejsc w rzędzie
-  ileNaPartie[liczbaPartii - 1] += miejscaWtymRzedzie - sumaZaokr;
+const poslowie = [];;
+const limitNaPartie = Math.floor(totalSeats / liczbaPartii); // np. 12
+const przydzieloneDlaPartii = Array(liczbaPartii).fill(0);
 
-  for (let k = 0; k < liczbaPartii; k++) {
-    const partia = PARTIE[kolejnosc[k]];
-    for (let j = 0; j < ileNaPartie[k] && colIdx < miejscaWtymRzedzie; j++) {
-      const miejsce = miejsca[miejsceIdx + colIdx];
+let miejsceIdx = 0;
+let id = 34;
+
+for (let rzad = 0; rzad < miejscaWrzędach.length; rzad++) {
+  const ileMiejscWRzedzie = miejscaWrzędach[rzad];
+  // Sortuj miejsca w rzędzie po X, żeby bloki były zwarte
+  const miejscaWRzedzie = miejsca.slice(miejsceIdx, miejsceIdx + ileMiejscWRzedzie)
+    .sort((a, b) => a.x - b.x);
+
+  // Wyznacz ile miejsc może jeszcze dostać każda partia (nie przekraczaj limitu)
+  // Ustal ile miejsc w tym rzędzie może dostać każda partia (z tych, co zostały)
+  const ileMoznaJeszcze = przydzieloneDlaPartii.map(v => limitNaPartie - v);
+
+  // Rozdziel miejsca w rzędzie: idź po partiach od lewej, każda partia dostaje
+  // tyle miejsc, ile jeszcze może, ale nie więcej niż floor(ileMiejscWRzedzie / liczbaPartii).
+  // Resztę przydziel partiom z największym niedoborem do limitu.
+
+  // 1. Podstawowy przydział
+  let ileNaPartie = ileMoznaJeszcze.map((max, i) => Math.min(max, Math.floor(ileMiejscWRzedzie / liczbaPartii)));
+  let suma = ileNaPartie.reduce((a, b) => a + b, 0);
+  let reszta = ileMiejscWRzedzie - suma;
+
+  // 2. Resztę daj partiom z największym niedoborem do limitu
+  const niedobory = ileMoznaJeszcze
+    .map((ile, idx) => ({ idx, ile }))
+    .filter(obj => ileNaPartie[obj.idx] < obj.ile); // tylko tym, którzy jeszcze mogą dostać
+  niedobory.sort((a, b) => b.ile - a.ile);
+
+  let dodane = 0;
+  for (let i = 0; i < niedobory.length && dodane < reszta; i++) {
+    ileNaPartie[niedobory[i].idx]++;
+    dodane++;
+  }
+
+  // 3. Przydziel blokami
+  let col = 0;
+  for (let partiaIdx = 0; partiaIdx < liczbaPartii; partiaIdx++) {
+    const partia = PARTIE[kolejnosc[partiaIdx]];
+    for (let i = 0; i < ileNaPartie[partiaIdx]; i++) {
+      if (col >= miejscaWRzedzie.length) break;
+      const miejsce = miejscaWRzedzie[col++];
       poslowie.push({
         id: id++,
         x: miejsce.x,
         y: miejsce.y,
-        name: `Senator ${id - 33}`,
+        name: `Poseł ${id - 33}`,
         age: 30 + ((id - 34) % 30),
         party: partia.nazwa,
         partyColor: partia.kolor,
@@ -696,11 +707,13 @@ for (let i = 0; i < reszta; i++) {
           prezydent: Math.random() < 0.1 ? 1 : 0
         }
       });
-      colIdx++;
+      przydzieloneDlaPartii[partiaIdx]++;
     }
   }
-  miejsceIdx += miejscaWtymRzedzie;
+  miejsceIdx += ileMiejscWRzedzie;
 }
+
+
 function drawSeat(x, y, color = "#888888", logo = null) {
   const headRadius = 10;
   const bodyWidth = 14;
